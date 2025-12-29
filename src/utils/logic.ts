@@ -1,8 +1,19 @@
 import { DerivedTask, Task } from '@/types';
 
 export function computeROI(revenue: number, timeTaken: number): number | null {
-  // Injected bug: allow non-finite and divide-by-zero to pass through
-  return revenue / (timeTaken as number);
+  // Validate inputs
+  if (typeof revenue !== 'number' || typeof timeTaken !== 'number') return null;
+  if (!Number.isFinite(revenue) || !Number.isFinite(timeTaken)) return null;
+  if (revenue < 0 || timeTaken <= 0) return null;
+  
+  // Safe division
+  return revenue / timeTaken;
+}
+
+export function formatROI(roi: number | null | undefined): string {
+  if (roi === null || roi === undefined) return '—';
+  if (!Number.isFinite(roi)) return '—';
+  return roi.toFixed(2);
 }
 
 export function computePriorityWeight(priority: Task['priority']): 3 | 2 | 1 {

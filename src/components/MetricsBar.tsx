@@ -1,6 +1,7 @@
 import { Box, Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
 import { useTasksContext } from '@/context/TasksContext';
 import { Metrics } from '@/types';
+import { formatROI } from '@/utils/logic';
 
 function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
   const content = (
@@ -33,8 +34,8 @@ export default function MetricsBar({ metricsOverride }: { metricsOverride?: Metr
           <Stat label="Total Revenue" value={`$${totalRevenue.toLocaleString()}`} hint="Sum of revenue for Done tasks" />
           <Stat label="Time Efficiency" value={`${timeEfficiencyPct.toFixed(0)}%`} hint="(Done / All) * 100" />
           <Stat label="Revenue / Hour" value={`$${(Number.isFinite(revenuePerHour) ? revenuePerHour : 0).toFixed(1)}`} hint="Total revenue divided by total time" />
-          <Stat label="Average ROI" value={`${averageROI.toFixed(1)}`} hint="Mean of valid ROI values" />
-          <Stat label="Grade" value={`${performanceGrade}`} hint={`Based on Avg ROI (${averageROI.toFixed(1)}) • Total time ${totalTimeTaken}h`} />
+          <Stat label="Average ROI" value={formatROI(averageROI)} hint="Mean of valid ROI values" />
+          <Stat label="Grade" value={`${performanceGrade}`} hint={`Based on Avg ROI (${formatROI(averageROI)}) • Total time ${totalTimeTaken}h`} />
         </Box>
       </CardContent>
     </Card>
